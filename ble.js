@@ -6,8 +6,8 @@ let stateChangedCallbacks = []
 
 dataManager.on('stateChanged', data => {
   const string = JSON.stringify(data)
-  console.log('stateChanged', data);
-  console.log(data.pounds/10000, "lbs")
+  // console.log('stateChanged', data);
+  // console.log(data.pounds/10000, "lbs")
   stateChangedCallbacks.forEach(callback => {
     callback(Buffer.from(string, 'utf8'));
   })
@@ -28,6 +28,10 @@ statusCharacteristic.start();
 
 const service = Object.create(PrimaryService);
 service.init('d270', [statusCharacteristic]);
+
+service.onConnect = function() {
+  "connected to service"
+}
 
 bleno.on('stateChange', function(state) {
   console.log('on -> stateChange: ' + state);
