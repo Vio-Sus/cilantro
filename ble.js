@@ -54,6 +54,28 @@ bleno.on('advertisingStart', function(error) {
   }
 });
 
+const events = [
+'advertisingStart',
+'advertisingStartError',
+'advertisingStop',
+'servicesSet',
+'servicesSetError',
+'accept',
+'disconnect',
+'rssiUpdate',
+]
+
+events.forEach(event => {
+  bleno.on(event, function(error) {
+    console.log(`on -> ${event}: ` + (error ? 'error ' + error : 'success'));
+  
+    if (!error) {
+      bleno.setServices([service]);
+    }
+  });
+  
+})
+
 
 StatusCharacteristic.onSubscribe = function(maxValueSize, callback) {
   console.log("On Subscribe")
