@@ -1,17 +1,18 @@
+const uuids = require("./uuids")
 module.exports = function(Characteristic) {
 
   const StatusCharacteristic = Object.create(Characteristic);
 
   StatusCharacteristic.start = function() {
     this.init({
-      uuid: 'd272',
+      uuid: uuids.readCharacteristic,
       properties: ['notify'],
-      descriptors: [
-        {
-          uuid: '2901',
-          value: 'lime Message'
-        }
-      ]
+      // descriptors: [
+      //   {
+      //     uuid: '2901',
+      //     value: 'lime Message'
+      //   }
+      // ]
     });
 
   };

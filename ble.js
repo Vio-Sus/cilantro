@@ -23,11 +23,14 @@ const PrimaryService = require('./characteristics/PrimaryService')(bleno);
 
 const StatusCharacteristic = require('./characteristics/StatusCharacteristic')(Characteristic);
 
+const uuids = require("./characteristics/uuids")
+
+
 const statusCharacteristic = Object.create(StatusCharacteristic);
 statusCharacteristic.start();
 
 const service = Object.create(PrimaryService);
-service.init('d270', [statusCharacteristic]);
+service.init(uuids.deviceService, [statusCharacteristic]);
 
 service.onConnect = function() {
   "connected to service"
