@@ -7,12 +7,12 @@ module.exports = function(Characteristic) {
     this.init({
       uuid: uuids.readCharacteristic,
       properties: ['notify'],
-      // descriptors: [
-      //   {
-      //     uuid: '2901',
-      //     value: 'lime Message'
-      //   }
-      // ]
+      descriptors: [
+        {
+          uuid: '2901',
+          value: 'lime Message'
+        }
+      ]
     });
 
   };
