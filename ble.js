@@ -58,7 +58,7 @@ const events = [
 'advertisingStart',
 'advertisingStartError',
 'advertisingStop',
-'servicesSet',
+// 'servicesSet',
 'servicesSetError',
 'accept',
 'disconnect',
