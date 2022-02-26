@@ -50,7 +50,7 @@ bleno.on('advertisingStart', function(error) {
 
 StatusCharacteristic.onSubscribe = function(maxValueSize, callback) {
   console.log("On Subscribe")
-  stateChangedCallbacks.push(callbacks)
+  stateChangedCallbacks.push(callback)
 };
 
 StatusCharacteristic.onUnsubscribe = function(maxValueSize, callback) {
