@@ -1,0 +1,19 @@
+{
+  "name": "GAS_ARDUINO_serial_js",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "npx mocha"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "net-socket.io": "^1.0.0",
+    "serialport": "^9.2.8"
+  },
+  "devDependencies": {
+    "mocha": "^6.1.4"
+  }
+}
