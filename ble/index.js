@@ -4,6 +4,7 @@ const Characteristic = require('./Characteristic')(bleno);
 const PrimaryService = require('./PrimaryService')(bleno);
 
 const StatusCharacteristic = require('./StatusCharacteristic')(Characteristic);
+const TestCharacteristic = require('./TestCharacteristic')(Characteristic);
 
 const uuids = require("./uuids")
 
@@ -31,10 +32,10 @@ module.exports = function() {
   let shouldStart = false
 
   const statusCharacteristic = Object.create(StatusCharacteristic);
-  exports.statusCharacteristic = statusCharacteristic
+  const testCharacteristic = Object.create(TestCharacteristic);
   
   const service = Object.create(PrimaryService);
-  service.init(uuids.deviceService, [statusCharacteristic]);
+  service.init(uuids.deviceService, [statusCharacteristic, testCharacteristic]);
 
   console.log("initialize ble")
   
@@ -87,5 +88,5 @@ module.exports = function() {
     stopAdvertising()
   }
 
-  return {start, stop, statusCharacteristic}
+  return {start, stop, statusCharacteristic, testCharacteristic}
 }

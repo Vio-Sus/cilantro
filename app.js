@@ -7,13 +7,14 @@ const serialManager = require('./serial/serialManager');
 const dataManager = require('./serial/dataManager')(serialManager);
 
 let stateChangedCallback = () => {}
-
+let weightString = "no weight yet"
 dataManager.on('stateChanged', data => {
   const string = JSON.stringify({
     ...data,
     poundsIgnore: data.pounds,
     pounds: data.pounds/10000
   })
+  weightString = string
   // console.log(data)
   // console.log('stateChanged', data);
   console.log(data.pounds/10000, "lbs")
@@ -38,6 +39,11 @@ serialManager.start(serialManager.vendorIds.uno2);
 const setupBLE = require('./ble')
 const ble = setupBLE()
 
+
+ble.testCharacteristic.onRead = function(maxValueSize, callback) {
+  console.log("On Read")
+  stateChangedCallback(Buffer.from(weightString, 'utf8'))
+};
 
 ble.statusCharacteristic.onSubscribe = function(maxValueSize, callback) {
   console.log("On Subscribe")
