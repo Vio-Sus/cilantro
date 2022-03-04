@@ -4,19 +4,17 @@
 
 const peripheral = require('./ble/peripheral');
 const WeightService = require('./ble/WeightService');
-const AnotherService = require('./ble/AnotherService');
 
 let status = "off"
 
 const weightService = new WeightService();
-const anotherService = new AnotherService();
 function startPeripheral() {
   if (status === "on") {
     return
   }
   status = "on"
 
-  peripheral.start("Cillllllaaaaaantrio", [weightService, anotherService])
+  peripheral.start("Cillllllaaaaaantrio", [weightService])
 }
 
 function stopPeripheral() {

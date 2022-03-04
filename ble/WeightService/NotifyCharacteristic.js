@@ -6,7 +6,13 @@ class NotifyCharacteristic extends bleno.Characteristic {
   constructor() {
     super({
       uuid: uuids.readCharacteristic,
-      properties: ['notify']
+      properties: ['notify'],
+      descriptors: [
+        {
+          uuid: '2901',
+          value: 'lime Message'
+        }
+      ]
     })
   }
 

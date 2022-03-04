@@ -10,7 +10,13 @@ class ReadCharacteristic extends bleno.Characteristic {
   constructor() {
     super({
       uuid: uuids.testCharacteristic,
-      properties: ['read', 'indicate']
+      properties: ['read', 'indicate'],
+      descriptors: [
+        {
+          uuid: '2902',
+          value: 'lemon Message'
+        }
+      ]
     })
   }
 
