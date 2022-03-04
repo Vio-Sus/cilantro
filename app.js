@@ -40,10 +40,14 @@ const setupBLE = require('./ble')
 const ble = setupBLE()
 
 
-ble.testCharacteristic.onRead = function(maxValueSize, callback) {
+ble.testCharacteristic.onSubscribe = function(maxValueSize, callback) {
   console.log("On Read")
   stateChangedCallback(Buffer.from(weightString, 'utf8'))
 };
+
+ble.testCharacteristic.onIndicate = function() {
+  console.log("onIndicate testCharacteristic")
+}
 
 ble.statusCharacteristic.onSubscribe = function(maxValueSize, callback) {
   console.log("On Subscribe")
@@ -56,7 +60,7 @@ ble.statusCharacteristic.onUnsubscribe = function(maxValueSize, callback) {
 };
 
 ble.statusCharacteristic.onIndicate = function() {
-  console.log("onIndicate")
+  console.log("onIndicate statusCharacteristic")
 }
 
 

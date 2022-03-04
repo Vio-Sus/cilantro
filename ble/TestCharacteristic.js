@@ -6,7 +6,7 @@ module.exports = function(Characteristic) {
   TestCharacteristic.start = function() {
     this.init({
       uuid: uuids.testCharacteristic,
-      properties: ['read'],
+      properties: ['read', 'indicate'],
       descriptors: [
         {
           uuid: '2902',
