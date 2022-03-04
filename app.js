@@ -1,68 +1,59 @@
+/**
+ * ble
+ */
+
+const peripheral = require('./ble/peripheral');
+const WeightService = require('./ble/WeightService');
+
+let status = "off"
+
+const weightService = new WeightService();
+function startPeripheral() {
+  if (status === "on") {
+    return
+  }
+  status = "on"
+
+  peripheral.start("Cillllllaaaaaantrio", [weightService])
+}
+
+function stopPeripheral() {
+  status = "off"
+  peripheral.stop()
+}
+
+
+
+// status === "on" ? stopPeripheral() : startPeripheral({readWifiData, readDeviceData})
+startPeripheral()
+
 
 /**
- * Scale
- */
+* Arduino
+*/
+
 
 const serialManager = require('./serial/serialManager');
 const dataManager = require('./serial/dataManager')(serialManager);
 
-let stateChangedCallback = () => {}
-let weightString = "no weight yet"
 dataManager.on('stateChanged', data => {
-  const string = JSON.stringify({
+  const weightData = {
     ...data,
     poundsIgnore: data.pounds,
     pounds: data.pounds/10000
-  })
-  weightString = string
-  // console.log(data)
-  // console.log('stateChanged', data);
-  console.log(data.pounds/10000, "lbs")
-  stateChangedCallback(Buffer.from(string, 'utf8'))
+  }
+
+  weightService.weightData = weightData
 });
 
-serialManager.start(serialManager.vendorIds.uno2);
+async function connectToArduino() {
+  try {
+    await serialManager.start(serialManager.vendorIds.uno2);
+  } catch {
+    console.log("failed to connect to arduino")
 
-
-// Test without scale
-
-// setInterval(() => {
-//   const string = JSON.stringify({pounds: Math.random()})
-//   stateChangedCallback(Buffer.from(string, 'utf8'));
-// }, 1000)
-
-
-/**
- * Bluetooth
- */
-
-const setupBLE = require('./ble')
-const ble = setupBLE()
-
-
-ble.testCharacteristic.onSubscribe = function(maxValueSize, callback) {
-  console.log("On Read")
-  stateChangedCallback(Buffer.from(weightString, 'utf8'))
-};
-
-ble.testCharacteristic.onIndicate = function() {
-  console.log("onIndicate testCharacteristic")
+    setTimeout(connectToArduino, 1000)
+  }
 }
 
-ble.statusCharacteristic.onSubscribe = function(maxValueSize, callback) {
-  console.log("On Subscribe")
-  stateChangedCallback = callback
-};
-
-ble.statusCharacteristic.onUnsubscribe = function(maxValueSize, callback) {
-  console.log("onUnsubscribe")
-  stateChangedCallback = () => {}
-};
-
-ble.statusCharacteristic.onIndicate = function() {
-  console.log("onIndicate statusCharacteristic")
-}
-
-
-ble.statusCharacteristic.start()
-ble.start()
+connectToArduino()
