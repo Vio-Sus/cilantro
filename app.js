@@ -1,27 +1,42 @@
-const setupBLE = require('./ble')
-const ble = setupBLE()
 
-// const serialManager = require('./serial/serialManager');
-// const dataManager = require('./serial/dataManager')(serialManager);
+/**
+ * Scale
+ */
+
+const serialManager = require('./serial/serialManager');
+const dataManager = require('./serial/dataManager')(serialManager);
 
 let stateChangedCallback = () => {}
 
-// dataManager.on('stateChanged', data => {
-//   const string = JSON.stringify(data)
-//   console.log(data)
-//   // console.log('stateChanged', data);
-//   // console.log(data.pounds/10000, "lbs")
-//   stateChangedCallbacks.forEach(callback => {
-//     callback(Buffer.from(string, 'utf8'));
-//   })
-// });
+dataManager.on('stateChanged', data => {
+  const string = JSON.stringify({
+    ...data,
+    poundsIgnore: data.pounds,
+    pounds: data.pounds/10000
+  })
+  // console.log(data)
+  // console.log('stateChanged', data);
+  console.log(data.pounds/10000, "lbs")
+  stateChangedCallback(Buffer.from(string, 'utf8'))
+});
 
-// serialManager.start(serialManager.vendorIds.uno2);
+serialManager.start(serialManager.vendorIds.uno2);
 
-setInterval(() => {
-  const string = JSON.stringify({pounds: Math.random()})
-  stateChangedCallback(Buffer.from(string, 'utf8'));
-}, 1000)
+
+// Test without scale
+
+// setInterval(() => {
+//   const string = JSON.stringify({pounds: Math.random()})
+//   stateChangedCallback(Buffer.from(string, 'utf8'));
+// }, 1000)
+
+
+/**
+ * Bluetooth
+ */
+
+const setupBLE = require('./ble')
+const ble = setupBLE()
 
 
 ble.statusCharacteristic.onSubscribe = function(maxValueSize, callback) {

@@ -35,9 +35,23 @@ module.exports = function() {
   
   const service = Object.create(PrimaryService);
   service.init(uuids.deviceService, [statusCharacteristic]);
+
+  console.log("initialize ble")
   
   service.onConnect = function() {
-    "connected to service"
+    console.log("connected to service")
+  }
+
+  function startAdvertising() {
+    console.log("start advertising")
+    bleno.startAdvertising('Cilantrio', [service.uuid]);
+    console.log("Add service", service)
+    bleno.setServices([service]);
+  }
+
+  function stopAdvertising() {
+    console.log("stop advertising")
+    stopAdvertising()
   }
 
 
@@ -46,9 +60,9 @@ module.exports = function() {
     blenoState = state
   
     if (state === 'poweredOn' && shouldStart) {
-      bleno.startAdvertising('Cilantrio', [service.uuid]);
+      startAdvertising()
     } else {
-      bleno.stopAdvertising();
+      stopAdvertising()
     }
   });
   
@@ -56,7 +70,7 @@ module.exports = function() {
     console.log('on -> advertisingStart: ' + (error ? 'error ' + error : 'success'));
   
     if (!error) {
-      bleno.setServices([service]);
+      // bleno.setServices([service]);
     }
   });
 
@@ -64,13 +78,13 @@ module.exports = function() {
   function start() {
     shouldStart = true 
     if (blenoState === 'poweredOn') {
-      bleno.startAdvertising('Cilantrio', [service.uuid]);
+      startAdvertising()
     } 
   }
 
   function stop() {
     shouldStart = false 
-    bleno.stopAdvertising();
+    stopAdvertising()
   }
 
   return {start, stop, statusCharacteristic}
