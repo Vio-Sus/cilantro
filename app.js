@@ -46,14 +46,12 @@ dataManager.on('stateChanged', data => {
   weightService.weightData = weightData
 });
 
-async function connectToArduino() {
-  try {
-    await serialManager.start(serialManager.vendorIds.uno2);
-  } catch {
-    console.log("failed to connect to arduino")
-
+function connectToArduino() {
+  serialManager.start(serialManager.vendorIds.uno2).
+  catch(error => {
+  console.log("failed to connect to arduino")
     setTimeout(connectToArduino, 1000)
-  }
+  })
 }
 
 connectToArduino()

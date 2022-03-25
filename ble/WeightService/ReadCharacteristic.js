@@ -6,7 +6,6 @@ const uuids = require('../uuids')
  * @param {A function that returns a promise that resolves to an array of network objects that look like {bssid, signalLevel, ssid}} networks 
  */
 class ReadCharacteristic extends bleno.Characteristic {
-  weightData = {}
   constructor() {
     super({
       uuid: uuids.testCharacteristic,
@@ -18,6 +17,8 @@ class ReadCharacteristic extends bleno.Characteristic {
         }
       ]
     })
+  this.weightData = {}
+
   }
 
   onReadRequest(offset, callback) {

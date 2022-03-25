@@ -2,7 +2,6 @@ const bleno = require('bleno');
 const uuids = require('../uuids');
 
 class NotifyCharacteristic extends bleno.Characteristic {
-  callback = () => {}
   constructor() {
     super({
       uuid: uuids.readCharacteristic,
@@ -14,6 +13,8 @@ class NotifyCharacteristic extends bleno.Characteristic {
         }
       ]
     })
+  this.callback = () => {}
+
   }
 
   set weightData(data) {
